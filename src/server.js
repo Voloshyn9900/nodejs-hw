@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import 'dotenv/config';
 import pino from 'pino';
 import pinoHttp from 'pino-http';
+import { connectMongoDB } from './db/connectMongoDB.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -93,6 +94,8 @@ app.use((err, req, res, next) => {
   });
 });
 
+await connectMongoDB();
+
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`✅ Server is running on port ${PORT}`);
 });
