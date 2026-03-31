@@ -1,3 +1,12 @@
+/src/tmp/*
+!/src/tmp/.gitkeep
+/src/uploads/photo/*
+!/src/uploads/photo/.gitkeep
+
+
+
+
+
 .vscode
 .DS_Store
 .idea
