@@ -5,26 +5,27 @@ export const getAllNotes = async (req, res) => {
   const { page = 1, perPage = 5, tag, search } = req.query;
   const skip = (page - 1) * perPage;
 
-  const filter = { userId: req.user._id };
+  let query = Note.find();
 
+  // обязательно: только свои заметки
+  query = query.where('userId').equals(req.user._id);
+
+  // фильтр по тегу
   if (tag) {
-    filter.tag = tag;
+    query = query.where('tag').equals(tag);
   }
+
+  //  текстовый поиск
   if (search) {
-    filter.$text = { $search: search };
+    query = query.where({ $text: { $search: search } }); 
   }
 
   const [totalNotes, notes] = await Promise.all([
-    Note.countDocuments(filter),
-    Note.find(filter).skip(skip).limit(perPage),
+    Note.countDocuments(query.getQuery()),
+    query.skip(skip).limit(perPage),
   ]);
 
   const totalPages = Math.ceil(totalNotes / perPage);
-
-  //Student.find() (query builder)
-  //Student.find() → просто создаёт query
-  //await Student.find() → вот тут реально идёт запрос
-  // const notes = await Note.find(filter);
 
   res.status(200).json({
     page,
