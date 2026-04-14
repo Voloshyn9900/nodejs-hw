@@ -5,8 +5,8 @@ import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/time.js';
 export const createSession = async (userId) => {
   return Session.create({
     userId,
-    accessToken: crypto.randomUUID(),
-    refreshToken: crypto.randomUUID(),
+    accessToken: crypto.randomBytes(32).toString('hex'),
+    refreshToken: crypto.randomBytes(32).toString('hex'),
     accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
     refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
   });

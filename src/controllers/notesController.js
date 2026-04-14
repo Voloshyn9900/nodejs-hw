@@ -75,15 +75,16 @@ export const deleteNote = async (req, res) => {
 export const updateNote = async (req, res) => {
   const { noteId } = req.params;
 
-  const note = await Note.findOneAndUpdate(
-    {
-      _id: noteId,
-      userId: req.user._id,
-    },
-    // returnDocument: 'after', тоже самое что и  { new: true },
-    req.body,
-    { new: true },
-  );
+ const note = await Note.findOneAndUpdate(
+   {
+     _id: noteId, // 🔹 noteId — это ID заметки из URL (req.params.noteId)
+     userId: req.user._id, // 🔹 userId — ID текущего пользователя (из authenticate middleware)
+   },
+   req.body, // 🔹 данные, которые нужно обновить (title, content, tag и т.д.)
+   {
+     returnDocument: 'after', // 🔹 вернуть уже ОБНОВЛЁННЫЙ документ (а не старый)
+   },
+ );
 
   if (!note) {
     throw createHttpError(404, 'Note not found');
