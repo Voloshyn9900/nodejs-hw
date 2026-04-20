@@ -12,8 +12,12 @@ export const updateUserAvatar = async (req, res) => {
   const result = await saveFileToCloudinary(req.file.buffer);
 
   // Обновляем поле avatar у текущего пользователя в базе
-  await User.updateOne({ _id: req.user._id }, { avatar: result.secure_url });
+  const updatedUser = await User.findOneAndUpdate(
+    { _id: req.user._id },
+    { avatar: result.secure_url },
+    { returnDocument: 'after' },
+  );
 
   // Возвращаем ссылку на новый аватар
-  return res.status(200).json({ url: result.secure_url });
+  return res.status(200).json({ url: updatedUser.avatar });
 };

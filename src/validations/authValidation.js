@@ -21,6 +21,6 @@ export const requestResetEmailSchema = {
 export const resetPasswordSchema = {
   [Segments.BODY]: Joi.object({
     token: Joi.string().required(),
-    password: Joi.string().required(),
+    password: Joi.string().min(8).required(),
   }),
 };

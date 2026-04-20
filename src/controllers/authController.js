@@ -119,7 +119,7 @@ export const requestResetEmail = async (req, res) => {
     { expiresIn: '15m' },
   );
 
-  const frontendUrl = `${process.env.FRONTEND_DOMAIN}?token=${resetToken}`;
+  const frontendUrl = `${process.env.FRONTEND_DOMAIN}/reset-password?token=${resetToken}`;
   const template = handlebars.compile(RESET_PASSWORD_TEMPLATE);
 
   const html = template({

@@ -14,7 +14,13 @@ export const saveFileToCloudinary = (buffer) => {
     // Создаём upload_stream — cloudinary читает данные из потока
     const uploadStream = cloudinary.uploader.upload_stream(
       // Папка в Cloudinary куда сохраняем
-      { folder: 'avatars' },
+      {
+        folder: 'avatars',
+        resource_type: 'image',
+        overwrite: true,
+        unique_filename: true,
+        use_filename: true,
+      },
       (error, result) => {
         if (error) return reject(error);
         resolve(result);
